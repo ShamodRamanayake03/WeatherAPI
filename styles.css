@@ -42,3 +42,9 @@ body {
     margin-right: 10px; /* Spacing between history cards */
   }
   
+/* Styles for Interactive Maps */
+#map {
+    height: 500px; /* Ensure the map has a fixed height */
+    margin-top: 20px; /* Space above the map */
+  }
+  

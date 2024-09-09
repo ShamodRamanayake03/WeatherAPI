@@ -135,3 +135,30 @@ function displayCurrentWeather(data) {
     }
   }
   
+  function displayMap(lat, lon) {
+    const map = L.map('map').setView([lat, lon], 10);
+  
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+  
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup('Location: ' + lat + ', ' + lon)
+      .openPopup();
+  }
+  
+  function fetchWeatherData(city) {
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3`;
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        displayCurrentWeather(data);
+        displayHourlyWeather(data);
+        displayForecastWeather(data);
+        fetchHistoricalData(data.location.lat, data.location.lon);
+        displayMap(data.location.lat, data.location.lon);
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  }
+  
