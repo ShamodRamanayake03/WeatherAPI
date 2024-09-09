@@ -14,10 +14,18 @@ body {
     height: 500px;
     margin-top: 20px;
   }
-
-
-/* Horizontal scrolling for hourly forecast */
-#hourlyForecast {
+  
+  #historyWeather {
+    margin-top: 20px;
+  }
+  
+  #error {
+    margin-top: 20px;
+    color: red;
+  }
+  
+  /* Horizontal scrolling for hourly forecast */
+  #hourlyForecast {
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -27,24 +35,9 @@ body {
     min-width: 120px; /* Ensure each card has a fixed width */
   }
   
-/* Styles for 3-Day Forecast */
-#forecastWeather .card {
-    margin-bottom: 20px;
-  }
-
-
-/* Styles for 7-Day Weather History */
-#historyWeather {
-    margin-top: 20px;
-  }
-  
+  /* Style for historical weather cards */
   .history-card {
-    margin-right: 10px; /* Spacing between history cards */
-  }
-  
-/* Styles for Interactive Maps */
-#map {
-    height: 500px; /* Ensure the map has a fixed height */
-    margin-top: 20px; /* Space above the map */
+    min-width: 180px;
+    margin-right: 10px;
   }
   
