@@ -32,4 +32,32 @@ function displayCurrentWeather(data) {
       </div>
     `;
   }
+
+  function fetchWeatherData(city) {
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&hours=24`;
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        displayCurrentWeather(data);
+        displayHourlyWeather(data);
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  }
+  
+  function displayHourlyWeather(data) {
+    const hourlyForecastEl = document.getElementById('hourlyForecast');
+    hourlyForecastEl.innerHTML = '';
+    data.forecast.forecastday[0].hour.forEach(hour => {
+      hourlyForecastEl.innerHTML += `
+        <div class="card">
+          <div class="card-body text-center">
+            <p>${hour.time.split(' ')[1]}</p>
+            <p>${hour.temp_c}°C</p>
+            <p>${hour.condition.text}</p>
+          </div>
+        </div>
+      `;
+    });
+  }
   

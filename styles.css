@@ -14,4 +14,16 @@ body {
     height: 500px;
     margin-top: 20px;
   }
+
+
+/* Horizontal scrolling for hourly forecast */
+#hourlyForecast {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  
+  #hourlyForecast .card {
+    min-width: 120px; /* Ensure each card has a fixed width */
+  }
   
