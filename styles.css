@@ -27,3 +27,8 @@ body {
     min-width: 120px; /* Ensure each card has a fixed width */
   }
   
+/* Styles for 3-Day Forecast */
+#forecastWeather .card {
+    margin-bottom: 20px;
+  }
+  

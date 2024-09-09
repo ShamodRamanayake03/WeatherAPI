@@ -60,4 +60,35 @@ function displayCurrentWeather(data) {
       `;
     });
   }
+
+  function fetchWeatherData(city) {
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3`;
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        displayCurrentWeather(data);
+        displayHourlyWeather(data);
+        displayForecastWeather(data);
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  }
+  
+  function displayForecastWeather(data) {
+    const forecastWeatherEl = document.getElementById('forecastWeather');
+    forecastWeatherEl.innerHTML = '';
+    data.forecast.forecastday.forEach(day => {
+      forecastWeatherEl.innerHTML += `
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <p class="card-title">${day.date}</p>
+              <p class="card-text">Avg Temp: ${day.day.avgtemp_c}°C</p>
+              <p class="card-text">Condition: ${day.day.condition.text}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
   
