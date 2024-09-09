@@ -1,0 +1,17 @@
+body {
+    background-color: #f0f0f0;
+  }
+  
+  .container {
+    max-width: 1200px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  #map {
+    height: 500px;
+    margin-top: 20px;
+  }
+  
