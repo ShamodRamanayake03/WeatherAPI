@@ -31,4 +31,14 @@ body {
 #forecastWeather .card {
     margin-bottom: 20px;
   }
+
+
+/* Styles for 7-Day Weather History */
+#historyWeather {
+    margin-top: 20px;
+  }
+  
+  .history-card {
+    margin-right: 10px; /* Spacing between history cards */
+  }
   

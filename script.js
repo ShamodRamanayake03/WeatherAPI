@@ -91,4 +91,47 @@ function displayCurrentWeather(data) {
       `;
     });
   }
+
+  function fetchWeatherData(city) {
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3`;
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        displayCurrentWeather(data);
+        displayHourlyWeather(data);
+        displayForecastWeather(data);
+        fetchHistoricalData(data.location.lat, data.location.lon);
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  }
+  
+  function fetchHistoricalData(lat, lon) {
+    const historyWeatherEl = document.getElementById('historyWeather');
+    historyWeatherEl.innerHTML = '';
+    const currentTime = new Date();
+  
+    for (let i = 1; i <= 7; i++) {
+      const date = new Date();
+      date.setDate(currentTime.getDate() - i);
+      const formattedDate = date.toISOString().split('T')[0];
+      const historyUrl = `https://api.weatherapi.com/v1/history.json?key=${apiKey}&q=${lat},${lon}&dt=${formattedDate}`;
+  
+      fetch(historyUrl)
+        .then(response => response.json())
+        .then(data => {
+          const day = data.forecast.forecastday[0];
+          historyWeatherEl.innerHTML += `
+            <div class="card text-center history-card">
+              <div class="card-body">
+                <h4 class="card-title">${day.date}</h4>
+                <p class="card-text">Avg Temp: ${day.day.avgtemp_c}°C</p>
+                <p class="card-text">Condition: ${day.day.condition.text}</p>
+              </div>
+            </div>
+          `;
+        })
+        .catch(error => console.error('Error fetching historical data:', error));
+    }
+  }
   
