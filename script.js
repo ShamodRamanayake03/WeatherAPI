@@ -1,4 +1,4 @@
-const apiKey = '3a2908451cd34ea4a7d120942240209'; 
+const apiKey = '3a2908451cd34ea4a7d120942240209';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (navigator.geolocation) {
@@ -20,6 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
       fetchWeatherDataByCity(city);
     } else {
       displayError('Please enter a city or country name.');
+    }
+  });
+
+  // Show or hide the "Go to Top" button
+  window.addEventListener('scroll', () => {
+    const goToTopBtn = document.getElementById('goToTopBtn');
+    if (window.scrollY > 300) {
+      goToTopBtn.style.display = 'block';
+    } else {
+      goToTopBtn.style.display = 'none';
     }
   });
 });
@@ -122,8 +132,8 @@ function displayForecastWeather(data) {
 }
 
 function displayHistoricalWeather(data) {
-  const historyWeatherEl = document.getElementById('historyWeather');
   const day = data.forecast.forecastday[0];
+  const historyWeatherEl = document.getElementById('historyWeather');
   historyWeatherEl.innerHTML += `
     <div class="card text-center history-card">
       <div class="card-body">
@@ -135,16 +145,51 @@ function displayHistoricalWeather(data) {
   `;
 }
 
+let map; // Declare the map variable outside the function to reuse it
+let marker; // Variable to store the marker
+let weatherLayer; // Variable to store the weather layer
+
 function displayMap(lat, lon) {
-  const map = L.map('map').setView([lat, lon], 10);
+  // Check if the map already exists
+  if (!map) {
+    // Initialize the map for the first time
+    map = L.map('map').setView([lat, lon], 6);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+    // Add the base map layer from OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+  } else {
+    // If the map is already initialized, just move the view
+    map.setView([lat, lon], 6);
+  }
 
-  L.marker([lat, lon]).addTo(map)
-    .bindPopup('Location: ' + lat + ', ' + lon)
+  // Remove the existing marker if it exists
+  if (marker) {
+    map.removeLayer(marker);
+  }
+
+  // Add a new marker for the new location
+  marker = L.marker([lat, lon]).addTo(map)
+    .bindPopup('Current Location')
     .openPopup();
+
+  // Remove the existing weather layer if it exists
+  if (weatherLayer) {
+    map.removeLayer(weatherLayer);
+  }
+
+  // Add the new weather radar layer based on the new location
+  const weatherLayerUrl = `https://tilecache.weatherapi.com/v1/map/radar/{z}/{x}/{y}.png?key=${apiKey}`;
+  weatherLayer = L.tileLayer(weatherLayerUrl, {
+    maxZoom: 19,
+  }).addTo(map);
+}
+
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function displayError(message) {
